@@ -7,25 +7,34 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ProceduralMesh : MonoBehaviour {
 
-    // public enum StreamType { Single, Multi }
+    public enum StreamType { Single, Multi };
 
-    // public enum GeneratorType {SquareGrid}
+    public enum GeneratorType {SquareGrid, SharedSquareGrid};
 
-    // public static ScheduleDelegate[,] meshJobs = {
+    // static MeshJobScheduleDelegate[,] jobs = {
     //     {
     //         MeshJob<SquareGrid, SingleStream>.ScheduleParallel,
     //         MeshJob<SquareGrid, MultiStream>.ScheduleParallel
+    //     },
+    //     {
+    //         MeshJob<SharedSquareGrid, SingleStream>.ScheduleParallel,
+    //         MeshJob<SharedSquareGrid, MultiStream>.ScheduleParallel
     //     }
     // };
 
-    [SerializeField, Range(1, 10)]
+    static MeshJobScheduleDelegate[] jobs = {
+		MeshJob<SquareGrid, SingleStream>.ScheduleParallel,
+		MeshJob<SharedSquareGrid, SingleStream>.ScheduleParallel
+	};
+
+    [SerializeField, Range(1, 50)]
     int resolution = 1;
 
-    // [SerializeField]
-    // StreamType streamType = StreamType.Single;
+    [SerializeField]
+    StreamType streamType = StreamType.Single;
 
-    // [SerializeField]
-    // GeneratorType generatorType = GeneratorType.SquareGrid;
+    [SerializeField]
+    GeneratorType generatorType = GeneratorType.SquareGrid;
 
     Mesh mesh;
 
@@ -42,8 +51,11 @@ public class ProceduralMesh : MonoBehaviour {
     void GenerateMesh() {
        Mesh.MeshDataArray meshDataArray = Mesh.AllocateWritableMeshData(1); // we only want 1 mesh
        Mesh.MeshData meshData = meshDataArray[0];
-       
-       MeshJob<SquareGrid, SingleStream>.ScheduleParallel(mesh, meshData, resolution, default).Complete(); // default job handel and then when the job handel returns we wait for it to complete.
+    //    int rowsOrHeight = jobs.GetLength(0);
+    //     int colsOrWidth = jobs.GetLength(1);
+    //     Debug.Log("ROws: " + rowsOrHeight);
+    //     Debug.Log("Cols: " + colsOrWidth);
+       jobs[(int)generatorType](mesh, meshData, resolution, default).Complete(); // default job handel and then when the job handel returns we wait for it to complete.
 
        Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, mesh);
     }

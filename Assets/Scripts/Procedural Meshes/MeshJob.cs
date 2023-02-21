@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ProceduralMeshes {
 
-    public delegate JobHandle ScheduleDelegate (
+    public delegate JobHandle MeshJobScheduleDelegate (
 		Mesh mesh, Mesh.MeshData meshData, int resolution, JobHandle dependency
 	);
 

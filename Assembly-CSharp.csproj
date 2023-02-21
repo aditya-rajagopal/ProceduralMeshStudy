@@ -36,17 +36,19 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Procedural Meshes\MeshJob.cs" />
+     <Compile Include="Assets\Scripts\Procedural Meshes\Streams.cs" />
      <Compile Include="Assets\Scripts\SimpleProceduralMesh.cs" />
+     <Compile Include="Assets\Scripts\ProceduralMesh.cs" />
+     <Compile Include="Assets\Scripts\Procedural Meshes\IMeshStreams.cs" />
+     <Compile Include="Assets\Scripts\Procedural Meshes\IMeshGenerator.cs" />
+     <Compile Include="Assets\Scripts\Procedural Meshes\Generators\SharedSquareGrid.cs" />
      <Compile Include="Assets\Scripts\AdvancedSingleStreamProceduralMesh.cs" />
      <Compile Include="Assets\Scripts\AdvancedMultiStreamProceduralMesh.cs" />
-     <Compile Include="Assets\Scripts\Procedural Meshes\Vertex.cs" />
-     <Compile Include="Assets\Scripts\Procedural Meshes\IMeshStreams.cs" />
-     <Compile Include="Assets\Scripts\Procedural Meshes\Streams.cs" />
-     <Compile Include="Assets\Scripts\Procedural Meshes\IMeshGenerator.cs" />
-     <Compile Include="Assets\Scripts\Procedural Meshes\Generators\SquareGrid.cs" />
-     <Compile Include="Assets\Scripts\ProceduralMesh.cs" />
-     <Compile Include="Assets\Scripts\Procedural Meshes\MeshJob.cs" />
      <Compile Include="Assets\Scripts\Procedural Meshes\TriangleUInt16.cs" />
+     <Compile Include="Assets\Scripts\Procedural Meshes\Generators\SquareGrid.cs" />
+     <Compile Include="Assets\Scripts\Procedural Meshes\Vertex.cs" />
+     <None Include="Assets\Materials\ProceduralMesh.hlsl" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.14f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
