@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ProceduralMeshes {
 
     public delegate JobHandle ScheduleDelegate (
-		Mesh mesh, Mesh.MeshData meshData, JobHandle dependency
+		Mesh mesh, Mesh.MeshData meshData, int resolution, JobHandle dependency
 	);
 
     // Lets create a generic for loop job that uses a generator and a stream
@@ -21,16 +21,20 @@ namespace ProceduralMeshes {
 
             public void Execute(int i) => generator.Execute(i, streams);
 
-            public static JobHandle ScheduleParallel (Mesh mesh, Mesh.MeshData meshData, JobHandle dependency) {
+            public static JobHandle ScheduleParallel (
+			Mesh mesh, Mesh.MeshData meshData, int resolution, JobHandle dependency
+            ) {
                 var job = new MeshJob<G, S>();
-                // mesh.bounds = job.generator.Bounds;
+                job.generator.Resolution = resolution;
                 job.streams.Setup(
                     meshData,
-                    mesh.bounds = job.generator.Bounds, // we can assign a value to a variable and then pass it as a parameterr.
+                    mesh.bounds = job.generator.Bounds,
                     job.generator.VertexCount,
                     job.generator.IndexCount
                 );
-                return job.ScheduleParallel(job.generator.JobLength, 1, dependency);
+                return job.ScheduleParallel(
+                    job.generator.JobLength, 1, dependency
+                );
             }
         }
 }

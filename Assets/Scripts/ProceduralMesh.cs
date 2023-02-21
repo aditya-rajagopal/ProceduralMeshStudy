@@ -7,22 +7,25 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ProceduralMesh : MonoBehaviour {
 
-    public enum StreamType { Single, Multi }
+    // public enum StreamType { Single, Multi }
 
-    public enum GeneratorType {SquareGrid}
+    // public enum GeneratorType {SquareGrid}
 
-    public static ScheduleDelegate[,] meshJobs = {
-        {
-            MeshJob<SquareGrid, SingleStream>.ScheduleParallel,
-            MeshJob<SquareGrid, MultiStream>.ScheduleParallel
-        }
-    };
+    // public static ScheduleDelegate[,] meshJobs = {
+    //     {
+    //         MeshJob<SquareGrid, SingleStream>.ScheduleParallel,
+    //         MeshJob<SquareGrid, MultiStream>.ScheduleParallel
+    //     }
+    // };
 
-    [SerializeField]
-    StreamType streamType = StreamType.Single;
+    [SerializeField, Range(1, 10)]
+    int resolution = 1;
 
-    [SerializeField]
-    GeneratorType generatorType = GeneratorType.SquareGrid;
+    // [SerializeField]
+    // StreamType streamType = StreamType.Single;
+
+    // [SerializeField]
+    // GeneratorType generatorType = GeneratorType.SquareGrid;
 
     Mesh mesh;
 
@@ -31,19 +34,25 @@ public class ProceduralMesh : MonoBehaviour {
             name = "Procedural Mesh"
         };
 
-        GenerateMesh();
+        // GenerateMesh();
+        // We want to constantly generate the new mesh. In case we change the resolution
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
     void GenerateMesh() {
        Mesh.MeshDataArray meshDataArray = Mesh.AllocateWritableMeshData(1); // we only want 1 mesh
        Mesh.MeshData meshData = meshDataArray[0];
-
-       meshJobs[(int)generatorType, (int)streamType](mesh, meshData, default).Complete(); // default job handel and then when the job handel returns we wait for it to complete.
+       
+       MeshJob<SquareGrid, SingleStream>.ScheduleParallel(mesh, meshData, resolution, default).Complete(); // default job handel and then when the job handel returns we wait for it to complete.
 
        Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, mesh);
-
-
     }
+
+    void OnValidate () => enabled = true;
+
+	void Update () {
+		GenerateMesh();
+		enabled = false;
+	}
 
 }
