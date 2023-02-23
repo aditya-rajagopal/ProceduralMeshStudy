@@ -7,9 +7,7 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ProceduralMesh : MonoBehaviour {
 
-    public enum StreamType { Single, Multi };
-
-    public enum GeneratorType {SquareGrid, SharedSquareGrid};
+    public enum GeneratorType {SquareGrid, SharedSquareGrid, SharedTriangleGrid};
 
     // static MeshJobScheduleDelegate[,] jobs = {
     //     {
@@ -24,17 +22,15 @@ public class ProceduralMesh : MonoBehaviour {
 
     static MeshJobScheduleDelegate[] jobs = {
 		MeshJob<SquareGrid, SingleStream>.ScheduleParallel,
-		MeshJob<SharedSquareGrid, SingleStream>.ScheduleParallel
+		MeshJob<SharedSquareGrid, SingleStream>.ScheduleParallel,
+        MeshJob<SharedTriangleGrid, SingleStream>.ScheduleParallel
 	};
 
     [SerializeField, Range(1, 50)]
     int resolution = 1;
 
     [SerializeField]
-    StreamType streamType = StreamType.Single;
-
-    [SerializeField]
-    GeneratorType generatorType = GeneratorType.SquareGrid;
+    GeneratorType generatorType;
 
     Mesh mesh;
 
@@ -64,6 +60,7 @@ public class ProceduralMesh : MonoBehaviour {
 
 	void Update () {
 		GenerateMesh();
+        // Debug.Log((int)generatorType);
 		enabled = false;
 	}
 
