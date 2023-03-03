@@ -113,7 +113,7 @@ Material:
     - _Ripple: 1
     - _Ripple_Amplitude: 0.1
     - _Ripple_Period: 2
-    - _Ripple_Speed: 0.1
+    - _Ripple_Speed: 0.12
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
